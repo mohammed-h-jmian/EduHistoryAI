@@ -1,0 +1,106 @@
+﻿@model IEnumerable<HistoricalFigureViewModel>;
+
+@{
+    ViewData["Title"] = "Historical Figures";
+}
+
+
+<section id="section-hero" class="section-dark no-top no-bottom text-light jarallax relative mh-500 jarallax">
+    <img src="~/assets/images/background/3.webp" class="jarallax-img" alt="">
+    <div class="gradient-edge-bottom h-50"></div>
+    <div class="sw-overlay op-5"></div>
+    <div class="abs w-80 bottom-10 z-2 w-100">
+        <div class="container">
+            <div class="row align-items-center justify-content-between gx-5">
+                <div class="col-lg-6">
+                    <div class="relative wow mask-right">
+                        <div class="text-start">
+                            <h1 class="fs-96 text-uppercase fs-sm-10vw mb-0 lh-1">Historical Figures</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 wow fadeInRight" data-wow-delay=".3s">
+                    <p class="mb-0">Join thought leaders, developers, researchers, and founders as we explore how artificial intelligence is reshaping industries, creativity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="col-lg-12 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <!-- Search Box -->
+                <input type="text" class="form-control form-control-lg" placeholder="Search news..." style="max-width: 300px;">
+
+                <!-- Dropdown Filter -->
+                <select class="form-select form-select-lg" style="max-width: 200px;">
+                    <option value="">All Months</option>
+                    <option value="may">May 2025</option>
+                    <option value="april">April 2025</option>
+                    <option value="march">March 2025</option>
+                </select>
+            </div>
+            <button class="btn-main fx-slide w-20">Filter</button>
+        </div>
+        <br />
+        <div class="row g-4">
+
+            @if (Model.Any())
+            {
+                foreach (var figure in Model)
+                {
+                    <div class="col-lg-4">
+                        <a asp-action="Details" asp-controller="Figures" asp-route-id="@figure.Id" class="d-block hover relative rounded-20 overflow-hidden text-light">
+                        @*     <div class="abs z-2 bg-color rounded-2 text-white p-3 pb-2 m-4 text-center fw-600">
+                                <h4 class="fs-36 mb-0 lh-1">28</h4>
+                                <span>May</span>
+                            </div> *@
+
+                            @* <img src="~/assets/images/news/s1.webp" class="w-100 hover-scale-1-1" alt=""> *@
+                            <img src="~/@figure.ImageUrl" class="w-100 hover-scale-1-1" alt="">
+
+                            <div class="absolute start-0 bottom-0 p-4 z-2">
+                                <h4>@figure.Name</h4>
+                                <p>@figure.Description</p>
+                            </div>
+
+                            <div class="gradient-edge-bottom h-70"></div>
+                        </a>
+                    </div>
+
+                }
+            }
+
+
+
+
+            <!-- pagination begin -->
+            <div class="col-lg-12 pt-4 text-center">
+                <div class="d-inline-block">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="fa fa-chevron-left"></i></span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active" aria-current="page"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true"><i class="fa fa-chevron-right"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- pagination end -->
+
+        </div>
+    </div>
+</section>   

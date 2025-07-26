@@ -1,0 +1,205 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <title>@ViewData["Title"] - EduHistoryAI</title>
+    <link rel="icon" href="images/icon.webp" type="image/gif" sizes="16x16">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="AIvent" name="description">
+    <meta content="" name="keywords">
+    <meta content="" name="author">
+    <!-- CSS Files
+    ================================================== -->
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap">
+    <link href="~/assets/css/vendors.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/swiper.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
+
+    <style>
+        #userDropdown::after {
+            display: none !important; /* لإزالة السهم */
+        }
+
+        #userDropdown {
+            border: none !important; /* لإزالة أي بوردر */
+            box-shadow: none !important; /* لإزالة أي تأثير ظل */
+        }
+
+    </style>
+    <!-- custom css -->
+    <link href="~/assets/css/swiper-custom-1.css" rel="stylesheet" type="text/css">
+    <!-- color scheme -->
+    <link id="colors" href="~/assets/css/colors/scheme-01.css" rel="stylesheet" type="text/css">
+    @await RenderSectionAsync("Css", required: false)
+</head>
+
+
+
+<body class="dark-scheme">
+
+    <div id="wrapper">
+
+        <div class="float-text show-on-scroll">
+            <span><a href="#">Scroll to top</a></span>
+        </div>
+        <div class="scrollbar-v show-on-scroll"></div>
+
+        <!-- page preloader begin -->
+        <div id="de-loader"></div>
+        <!-- page preloader close -->
+
+        <header class="transparent">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="de-flex">
+                            <div class="de-flex-col">
+                                <!-- logo begin -->
+                                <div id="logo">
+                                    <a asp-action="Index" asp-controller="Home">
+                                        <img class="logo-main" src="~/assets/images/logo.webp" alt="">
+                                        <img class="logo-scroll" src="~/assets/images/logo.webp" alt="">
+                                        <img class="logo-mobile" src="~/assets/images/logo.webp" alt="">
+                                    </a>
+                                </div>
+                                <!-- logo close -->
+                            </div>
+
+                            <div class="de-flex-col">
+                                <div class="de-flex-col header-col-mid">
+                                    <ul id="mainmenu">
+                                        <li>
+                                            <a class="menu-item active" href="#section-hero">Home</a>
+                                        </li>
+                                        <li><a class="menu-item" href="#section-about">About</a></li>
+                                        <li><a class="menu-item" href="#section-why-attend">Why Simulator</a></li>
+                                        <li><a class="menu-item" href="#section-speakers">Legends</a></li>
+                                        <li><a class="menu-item" href="#section-schedule">Schedule</a></li>
+                                        <li><a class="menu-item" href="#section-tickets">Tickets</a></li>
+                                        <li><a class="menu-item" href="#section-venue">My supporter</a></li>
+                                        <li><a class="menu-item" href="#section-faq">FAQ</a></li>
+                                        <li>
+                                            <a class="menu-item" asp-action="Index" asp-controller="Figures">Figures</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="de-flex-col">
+
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                        @*             <div class="btn-main fx-slide w-80">
+                                        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @ViewBag.FullName</a>
+                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                        </form> 
+                                    </div> *@
+
+                                    <div class="dropdown">
+                                        <a href="#" class="d-flex align-items-center text-decoration-none" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="~/assets/images/user.jpg" alt="User Avatar" class="rounded-circle" width="40" height="40">
+                                        </a>
+
+                                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                            <li class="dropdown-header fw-bold text-dark px-3">Hello @ViewBag.FullName</li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Manage Account</a>
+                                            </li>
+                                            <li>
+                                                <form method="post" asp-action="Logout" asp-controller="Auth" class="dropdown-item p-0">
+                                                    <button type="submit" class="btn-main fx-slide w-100">Logout</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+
+                                }
+                                else
+                                {
+                                         <a class="btn-main fx-slide w-100" asp-action="Login" asp-controller="Auth"><span>Login</span></a>
+  
+                                }
+                         
+                                <div class="menu_side_area">
+                                    <span id="menu-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        @RenderBody()
+
+    </div>
+
+    <!-- footer begin -->
+    <footer class="text-light section-dark">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-12">
+                    <div class="d-lg-flex align-items-center justify-content-between text-center">
+                        <div>
+                            <h3 class="fs-20">Address</h3>
+                            Istanbul Street,<br>
+                            Rafah - Gaza,<br>
+                            Palestine
+                        </div>
+
+                        <div>
+                            <img src="images/logo.webp" class="w-150px" alt=""><br>
+                            <div class="social-icons mb-sm-30 mt-4">
+                                <a href="https://www.facebook.com/mohammed.h.jmian" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="https://www.instagram.com/mohammed.h.jmian/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="https://www.linkedin.com/in/mohammed-h-jmian/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                                <a href="https://github.com/mohammed-h-jmian" target="_blank"><i class="fa-brands fa-github"></i></a>
+                            </div>
+
+                        </div>
+                        <div>
+                            <h3 class="fs-20">Contact Us</h3>
+                            Phone Number : +972 59 456 3069<br>
+                            Email : m.h.jmian@gmail.com
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="subfooter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        &copy; 2025 - Copyright Mohammed H. Jmian
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer end -->
+    <div id="buy-now" class="show-on-scroll">
+        <a class="btn-buy" href="https://www.instagram.com/mohammed.h.jmian/" target="_blank">Support me <img src="demo/envato.svg" alt=""></a>
+    </div>
+    <!-- Javascript Files
+    ================================================== -->
+    <script src="~/assets/js/vendors.js"></script>
+    <script src="~/assets/js/designesia.js"></script>
+    <script src="~/assets/js/countdown-custom.js"></script>
+    <script src="~/assets/js/custom-marquee.js"></script>
+    <script src="~/assets/js/swiper.js"></script>
+    <script src="~/assets/js/custom-swiper-1.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+
+</html>

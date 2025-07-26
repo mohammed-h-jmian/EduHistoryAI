@@ -1,0 +1,129 @@
+﻿@model EduHistoryAI.Core.ViewModels.ChatSessionViewModel
+
+@{
+    ViewData["Title"] = $"Chat with {Model.HistoricalFigure.Name}";
+}
+
+<section>
+    <div class="container">
+        <div id="chat-conversation">
+            <h3 class="mb-4 text-light">Chat with @Model.HistoricalFigure.Name</h3>
+            <p>SessionId: @Model.Id</p>
+
+            <div id="messages-container" class="mb-4 p-3 border rounded bg-dark text-white"
+                 style="max-height: 400px; overflow-y: auto;">
+
+                @foreach (var msg in Model.Messages.OrderBy(m => m.SentAt))
+                {
+                    if (msg.Sender == "User")
+                    {
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="comment-info text-end">
+                                <span class="c_name text-info">You</span>
+                                <span class="c_date text-muted">@msg.SentAt.ToString()</span>
+                                <div class="clearfix"></div>
+                                <div class="comment bg-primary text-white p-3 rounded-3 mt-2 d-inline-block">
+                                    @Html.Raw(Html.Encode(msg.MessageText))
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex mb-3">
+                            <div class="comment-info">
+                                <span class="c_name text-warning">@Model.HistoricalFigure.Name</span>
+                                <span class="c_date text-muted">@msg.SentAt.ToString()</span>
+                                <div class="clearfix"></div>
+                                <div class="comment bg-secondary text-white p-3 rounded-3 mt-2 d-inline-block">
+                                    @Html.Raw(Html.Encode(msg.MessageText))
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- إدخال رسالة جديدة -->
+            <div id="comment-form-wrapper" class="pt-3 border-top">
+                <h4 class="text-light">Send a Message</h4>
+                <div class="comment_form_holder">
+                    <form id="chat-form" class="form-border">
+                        <textarea id="message" class="form-control mb-3" placeholder="Type your message..."></textarea>
+                        <button type="submit" class="btn btn-primary px-4">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        const chatForm = document.getElementById("chat-form");
+        const messageInput = document.getElementById("message");
+        const messagesContainer = document.getElementById("messages-container");
+
+        const sessionId = '@Model.Id';
+        const figureName = '@Model.HistoricalFigure.Name';
+
+        function appendMessage(sender, message, isUser) {
+            const sanitizedMessage = document.createElement('div');
+            sanitizedMessage.textContent = message; 
+
+            const msgHtml = isUser
+                ? `<div class="d-flex justify-content-end mb-3">
+                        <div class="comment-info text-end">
+                            <span class="c_name text-info">You</span>
+                            <span class="c_date text-muted">${new Date().toLocaleTimeString()}</span>
+                            <div class="clearfix"></div>
+                            <div class="comment bg-primary text-white p-3 rounded-3 mt-2 d-inline-block">
+                                ${sanitizedMessage.innerHTML}
+                            </div>
+                   </div></div>`
+                : `<div class="d-flex mb-3">
+                        <div class="comment-info">
+                            <span class="c_name text-warning">${figureName}</span>
+                            <span class="c_date text-muted">${new Date().toLocaleTimeString()}</span>
+                            <div class="clearfix"></div>
+                            <div class="comment bg-secondary text-white p-3 rounded-3 mt-2 d-inline-block">
+                                ${sanitizedMessage.innerHTML}
+                            </div>
+                   </div></div>`;
+
+            messagesContainer.insertAdjacentHTML("beforeend", msgHtml);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        chatForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            appendMessage("User", message, true);
+            messageInput.value = "";
+
+            fetch("@Url.Action("SendMessage", "Chat")", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    sessionId: sessionId,
+                    figureName: figureName,
+                    messageText: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    appendMessage("AI", data.aiMessage, false);
+                } else {
+                    alert("Failed to get AI response.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while sending the message.");
+            });
+        });
+    </script>
+}

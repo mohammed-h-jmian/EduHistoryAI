@@ -1,0 +1,85 @@
+﻿@model ChatSessionViewModel
+
+
+<section>
+    <div class="container">
+        <div id="chat-conversation">
+            <h4>Chat Conversation</h4>
+
+            <div class="spacer-half"></div>
+
+            <!-- My Message (Right Aligned) -->
+            <div class="d-flex justify-content-end mb-4">
+                <div class="comment-info text-end">
+                    <span class="c_name text-light">You</span>
+                    <span class="c_date id-color">2 days ago</span>
+                    <div class="clearfix"></div>
+                    <div class="comment bg-primary text-white p-3 rounded-3 mt-2 d-inline-block">
+                        Hello, how are you?
+                    </div>
+                </div>
+                <div class="avatar ms-2">
+                    <img src="~/assets/images/testimonial/1.webp" class="w-70px rounded-circle" alt="">
+                </div>
+            </div>
+
+            <!-- Their Reply (Left Aligned) -->
+            <div class="d-flex mb-4">
+                <div class="avatar me-2">
+                    <img src="~/assets/images/testimonial/2.webp" class="w-70px rounded-circle" alt="">
+                </div>
+                <div class="comment-info">
+                    <span class="c_name text-light">Merrill Rayos</span>
+                    <span class="c_date id-color">2 days ago</span>
+                    <div class="clearfix"></div>
+                    <div class="comment bg-secondary text-white p-3 rounded-3 mt-2 d-inline-block">
+                        I'm good, thank you! What about you?
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Message -->
+            <div class="d-flex justify-content-end mb-4">
+                <div class="comment-info text-end">
+                    <span class="c_name text-light">You</span>
+                    <span class="c_date id-color">2 days ago</span>
+                    <div class="clearfix"></div>
+                    <div class="comment bg-primary text-white p-3 rounded-3 mt-2 d-inline-block">
+                        I'm doing well, thanks for asking!
+                    </div>
+                </div>
+                <div class="avatar ms-2">
+                    <img src="~/assets/images/testimonial/1.webp" class="w-70px rounded-circle" alt="">
+                </div>
+            </div>
+
+            <!-- Their Reply -->
+            <div class="d-flex mb-4">
+                <div class="avatar me-2">
+                    <img src="~/assets/images/testimonial/3.webp" class="w-70px rounded-circle" alt="">
+                </div>
+                <div class="comment-info">
+                    <span class="c_name text-light">Sanford Crowley</span>
+                    <span class="c_date id-color">2 days ago</span>
+                    <div class="clearfix"></div>
+                    <div class="comment bg-secondary text-white p-3 rounded-3 mt-2 d-inline-block">
+                        Great to hear! Any plans for today?
+                    </div>
+                </div>
+            </div>
+
+            <div class="spacer-single"></div>
+
+            <div id="comment-form-wrapper">
+                <h4>Send a Message</h4>
+                <div class="comment_form_holder">
+                    <form id="contact_form" name="form1" class="form-border" method="post" action="#">
+                        <label>Message <span class="req">*</span></label>
+                        <textarea cols="10" rows="3" name="message" id="message" class="form-control mb-4"></textarea>
+                        <a class="btn-main fx-slide" href="#"><span>Send</span></a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

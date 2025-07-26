@@ -1,0 +1,73 @@
+﻿@model HistoricalFigureViewModel;
+@{
+    ViewData["Title"] = "Figures Details";
+}
+
+<section id="section-hero" class="section-dark no-top no-bottom text-light jarallax relative mh-500 jarallax">
+    <img src="~/assets/images/background/3.webp" class="jarallax-img" alt="">
+    <div class="gradient-edge-bottom h-50"></div>
+    <div class="sw-overlay op-5"></div>
+    <div class="abs bottom-10 z-2 w-100">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="text-start fs-48 fs-sm-10vw wow fadeIn" data-wow-delay=".6s">
+                       @Model.Name
+                    </h1>
+
+                </div>
+
+                <div class="col-lg-2">
+                    <div class="relative text-lg-end">
+                        <a class="btn-main w-100" asp-action="Start" asp-controller="Chat" asp-route-figureId="@Model.Id">
+
+                            <h4 >Start Chat </h4>
+
+
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-10">
+                <div class="blog-read">
+
+                    <div class="post-text">
+
+                        <img src="~/@Model.ImageUrl" class="w-50 rounded-1 mb-4 al" alt="">
+
+                        <p>@Model.Description</p>
+
+                        <h5>Highlights of the 2025 Design Expo include:</h5>
+
+                        <ul class="ul-check">
+                            <li>Keynote addresses by global design icons and industry disruptors</li>
+                            <li>Hands-on workshops covering tools like Figma, Adobe Firefly, Midjourney, and more</li>
+                            <li>Panel discussions on the ethical impact of generative AI in design</li>
+                            <li>Startup design showcases and prototype exhibitions</li>
+                            <li>Networking zones connecting talent with top design-led companies</li>
+                        </ul>
+
+                        <p>In addition to in-person attendance, the event will feature a hybrid format with virtual access to all keynotes and live panels, allowing participants from around the world to engage and collaborate.</p>
+
+                        <p>Whether you're a seasoned professional or a rising designer, the 2025 Design Expo Conference is the ultimate opportunity to stay ahead of the curve and shape what’s next in the world of design.</p>
+
+                    </div>
+
+                </div>
+
+
+
+          
+
+            </div>
+
+        </div>
+    </div>
+</section>     

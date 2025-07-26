@@ -1,0 +1,115 @@
+﻿@model ChatSessionViewModel
+@{
+    ViewData["Title"] = "Chat with " + Model.HistoricalFigure.Name;
+}
+<section>
+    <div class="container">
+        <div id="chat-conversation">
+            <h4>Chat Conversation</h4>
+            <div class="spacer-half"></div>
+
+            <div id="messages-container" class="mb-4" style="max-height: 400px; overflow-y: auto;">
+                <div class="d-flex justify-content-end mb-4">
+                    <div class="comment-info text-end">
+                        <span class="c_name text-light">You</span>
+                        <span class="c_date id-color">2 days ago</span>
+                        <div class="clearfix"></div>
+                        <div class="comment bg-primary text-white p-3 rounded-3 mt-2 d-inline-block">
+                            Hello, how are you?
+                        </div>
+                    </div>
+                    <div class="avatar ms-2">
+                        <img src="~/assets/images/testimonial/1.webp" class="w-70px rounded-circle" alt="">
+                    </div>
+                </div>
+
+                <div class="d-flex mb-4">
+                    <div class="avatar me-2">
+                        <img src="~/assets/images/testimonial/2.webp" class="w-70px rounded-circle" alt="">
+                    </div>
+                    <div class="comment-info">
+                        <span class="c_name text-light">AI Bot</span>
+                        <span class="c_date id-color">2 days ago</span>
+                        <div class="clearfix"></div>
+                        <div class="comment bg-secondary text-white p-3 rounded-3 mt-2 d-inline-block">
+                            I'm good, thank you! What about you?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="comment-form-wrapper" class="pt-3 border-top">
+                <h4>Send a Message</h4>
+                <div class="comment_form_holder">
+                    <form asp-action="SendMessage" asp-controller="Chat" id="chat-form" class="form-border" method="post">
+                        <label>Message <span class="req">*</span></label>
+                        <textarea cols="10" rows="3" name="message" id="message" class="form-control mb-4"></textarea>
+                        <button type="submit" class="btn-main fx-slide"><span>Send</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        const chatForm = document.getElementById("chat-form");
+        const messageInput = document.getElementById("message");
+        const messagesContainer = document.getElementById("messages-container");
+
+        function scrollToBottom() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        window.onload = scrollToBottom;
+
+        chatForm.addEventListener("submit", function (e) {
+            e.preventDefault(); 
+
+            const message = messageInput.value.trim();
+            if (message === "") return;
+
+            const userMessageHtml = `
+                <div class="d-flex justify-content-end mb-4">
+                    <div class="comment-info text-end">
+                        <span class="c_name text-light">You</span>
+                        <span class="c_date id-color">${new Date().toLocaleTimeString()}</span>
+                        <div class="clearfix"></div>
+                        <div class="comment bg-primary text-white p-3 rounded-3 mt-2 d-inline-block">
+                            ${message}
+                        </div>
+                    </div>
+                    <div class="avatar ms-2">
+                        <img src="~/assets/images/testimonial/1.webp" class="w-70px rounded-circle" alt="">
+                    </div>
+                </div>
+            `;
+            messagesContainer.insertAdjacentHTML("beforeend", userMessageHtml);
+
+            messageInput.value = "";
+
+            scrollToBottom();
+
+            setTimeout(() => {
+                const aiMessageHtml = `
+                    <div class="d-flex mb-4">
+                        <div class="avatar me-2">
+                            <img src="~/assets/images/testimonial/2.webp" class="w-70px rounded-circle" alt="">
+                        </div>
+                        <div class="comment-info">
+                            <span class="c_name text-light">AI Bot</span>
+                            <span class="c_date id-color">${new Date().toLocaleTimeString()}</span>
+                            <div class="clearfix"></div>
+                            <div class="comment bg-secondary text-white p-3 rounded-3 mt-2 d-inline-block">
+                                I received: ${message}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                messagesContainer.insertAdjacentHTML("beforeend", aiMessageHtml);
+                scrollToBottom();
+            }, 1000);
+        });
+    </script>
+}
