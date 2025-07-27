@@ -26,6 +26,8 @@ namespace EduHistoryAI.Infrastructure.AutoMapper
 
             CreateMap<ChatSession, ChatSessionViewModel>();
             CreateMap<HistoricalFigure, HistoricalFigureViewModel>();
+            CreateMap<CreateFigureDto, HistoricalFigure>();
+
             //CreateMap<HistoricalFigure, FigureViewModel>();
 
 

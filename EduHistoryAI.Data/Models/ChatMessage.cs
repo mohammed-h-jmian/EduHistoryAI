@@ -14,7 +14,7 @@ namespace EduHistoryAI.Data.Models
 
         public string MessageText { get; set; } = string.Empty;
 
-        public DateTime SentAt { get; set; } = DateTime.UtcNow;
+        public DateTime SentAt { get; set; } = DateTime.Now;
 
         public int ChatSessionId { get; set; }
         public ChatSession? ChatSession { get; set; }

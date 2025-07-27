@@ -1,0 +1,54 @@
+﻿@model IEnumerable<EduHistoryAI.Core.ViewModels.ChatSessionViewModel>
+
+@{
+    ViewData["Title"] = "Chat Sessions";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary">Chat Sessions</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    @if (Model.Any())
+    {
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Student</th>
+                    <th>Figure</th>
+                    <th>Last Activity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var session in Model)
+                {
+                    <tr>
+                        <td>@session.Id</td>
+                        <td>@session.Student?.FullName</td>
+                        <td>@session.HistoricalFigure?.Name</td>
+                        <td>@session.LastActivityAt.ToString("g")</td>
+                        <td>
+                            <a asp-action="Details" asp-controller="Chat" asp-area="Admin" asp-route-id="@session.Id" class="btn btn-primary btn-sm">
+                                <i data-feather="eye" style="width:50px"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-muted">No chat sessions found.</p>
+    }
+</div>
+

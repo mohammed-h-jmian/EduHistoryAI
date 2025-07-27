@@ -14,7 +14,7 @@ namespace EduHistoryAI.Core.Dtos
         public string Sender { get; set; } = "User";
         public string FigureName { get; set; }
 
-        public string MessageText { get; set; } = string.Empty;
+        public string MessageText { get; set; }
 
         public int SessionId { get; set; }
         }

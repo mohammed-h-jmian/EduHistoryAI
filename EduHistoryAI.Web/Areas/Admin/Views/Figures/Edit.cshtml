@@ -1,0 +1,57 @@
+﻿@model CreateFigureDto
+
+@{
+    ViewData["Title"] = "Edit Historical Figure";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit Historical Figure</h2>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <form asp-action="Edit" asp-controller="Figures" asp-area="Admin" method="post" enctype="multipart/form-data" class="p-4 rounded shadow">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label fw-bold"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label fw-bold"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Current Image</label><br />
+            <img src="~/@Model.ImageUrl" class="rounded mb-3" style="width:150px;height:150px;object-fit:cover;" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Upload New Image (Optional)</label>
+            <input type="file" asp-for="ImageFile" class="form-control" accept="image/*" onchange="previewImage(event)" />
+            <div class="mt-2">
+                <img id="preview" class="rounded" style="width:150px;display:none;" />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2">Save Changes</button>
+        <a asp-action="Index" asp-controller="Figures" asp-area="Admin" class="btn btn-secondary w-100 py-2 mt-2">Back</a>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function previewImage(event) {
+            const [file] = event.target.files;
+            if (file) {
+                const preview = document.getElementById("preview");
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = "block";
+            }
+        }
+    </script>
+}

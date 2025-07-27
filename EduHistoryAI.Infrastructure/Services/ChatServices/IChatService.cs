@@ -10,9 +10,11 @@ namespace EduHistoryAI.Infrastructure.Services.ChatServices
 {
     public interface IChatService
     {
-        Task<int> StartChatAsync(string studentId, int historicalFigureId);
-        Task<ChatSessionViewModel> GetSessionAsync(int sessionId);
-        Task AddMessageAsync(int sessionId, string sender, string messageText);
-        Task<string> SendUserMessageAndGetAIReplyAsync(int sessionId, string userMessage, string figureName);
+        Task<int> StartChat(string studentId, int historicalFigureId);
+        Task<ChatSessionViewModel> GetSession(int sessionId);
+        Task AddMessage(int sessionId, string sender, string messageText);
+        Task<string> SendUserMessageAndGetAIReply(int sessionId, string userMessage, string figureName);
+        Task<IEnumerable<ChatSessionViewModel>> GetAllSessions();
     }
+
 }

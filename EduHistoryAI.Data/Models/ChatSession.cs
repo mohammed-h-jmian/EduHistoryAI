@@ -11,7 +11,7 @@ namespace EduHistoryAI.Data.Models
         public int Id { get; set; }
         public string StudentId { get; set; } = string.Empty;
         public ApplicationUser Student { get; set; }
-        public DateTime StartedAt { get; set; } = DateTime.UtcNow;
+        public DateTime StartedAt { get; set; } = DateTime.Now;
         public DateTime LastActivityAt { get; set; }
         public int HistoricalFigureId { get; set; }
         public HistoricalFigure? HistoricalFigure { get; set; }

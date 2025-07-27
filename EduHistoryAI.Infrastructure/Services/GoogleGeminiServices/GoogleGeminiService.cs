@@ -18,7 +18,7 @@ namespace EduHistoryAI.Infrastructure.Services.GoogleGeminiServices
             _httpClient = httpClient;
         }
 
-        public async Task<string> GenerateContentAsync(string userMessage)
+        public async Task<string> GenerateContent(string userMessage)
         {
             var payload = new
             {

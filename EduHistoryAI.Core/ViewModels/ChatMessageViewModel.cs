@@ -12,9 +12,9 @@ namespace EduHistoryAI.Core.ViewModels
 
         public string Sender { get; set; } = "User";
 
-        public string MessageText { get; set; } = string.Empty;
+        public string MessageText { get; set; } 
 
-        public DateTime SentAt { get; set; } = DateTime.UtcNow;
+        public DateTime SentAt { get; set; }
 
         public int ChatSessionId { get; set; }
         public ChatSessionViewModel? ChatSession { get; set; }

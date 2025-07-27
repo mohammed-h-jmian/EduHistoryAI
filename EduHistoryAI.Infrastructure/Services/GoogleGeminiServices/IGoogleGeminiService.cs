@@ -8,6 +8,6 @@ namespace EduHistoryAI.Infrastructure.Services.GoogleGeminiServices
 {
     public interface IGoogleGeminiService
     {
-        Task<string> GenerateContentAsync(string userMessage);
+        Task<string> GenerateContent(string userMessage);
     }
 }

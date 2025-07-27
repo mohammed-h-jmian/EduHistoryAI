@@ -1,0 +1,27 @@
+﻿@model EduHistoryAI.Core.ViewModels.ChatSessionViewModel
+
+@{
+    ViewData["Title"] = $"Chat #{Model.Id}";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3 text-primary">Chat with @Model.HistoricalFigure?.Name</h2>
+    <p><strong>Student:</strong> @Model.Student?.FullName (@Model.Student?.Email)</p>
+    <p><strong>Started:</strong> @Model.StartedAt.ToString("f")</p>
+    <p><strong>Last Activity:</strong> @Model.LastActivityAt.ToString("f")</p>
+
+    <div class="border rounded p-3" style="max-height:500px; overflow-y:auto;">
+        @foreach (var msg in Model.Messages.OrderBy(m => m.SentAt))
+        {
+            <div class="mb-3 @(msg.Sender == "User" ? "text-end" : "")">
+                <div class="p-2 @(msg.Sender == "User" ? "bg-primary text-dark" : "bg-secondary text-dark") rounded">
+                    <strong>@msg.Sender:</strong> @msg.MessageText
+                    <br />
+                    <small class="text-dark">@msg.SentAt.ToString("g")</small>
+                </div>
+            </div>
+        }
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back</a>
+</div>

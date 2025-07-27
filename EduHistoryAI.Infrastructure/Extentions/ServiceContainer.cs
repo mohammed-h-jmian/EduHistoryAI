@@ -1,5 +1,6 @@
 ﻿using EduHistoryAI.Infrastructure.Services.AuthServices;
 using EduHistoryAI.Infrastructure.Services.ChatServices;
+using EduHistoryAI.Infrastructure.Services.FileServices;
 using EduHistoryAI.Infrastructure.Services.GoogleGeminiServices;
 using EduHistoryAI.Infrastructure.Services.HistoricalFigureServices;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,7 @@ namespace EduHistoryAI.Infrastructure.Extentions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IChatService, ChatService>();
             services.AddScoped<IGoogleGeminiService, GoogleGeminiService>();
+            services.AddScoped<IFileService, FileService>();
 
             return services;
         }

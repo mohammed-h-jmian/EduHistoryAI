@@ -18,7 +18,7 @@ namespace EduHistoryAI.Data.Models
 
         public ICollection<ChatSession> ChatSessions { get; set; } = new List<ChatSession>();
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
         public String? CreatedById { get; set; } 
         public ApplicationUser CreatedBy { get; set; }
     }

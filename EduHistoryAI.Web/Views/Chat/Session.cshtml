@@ -4,15 +4,40 @@
     ViewData["Title"] = $"Chat with {Model.HistoricalFigure.Name}";
 }
 
+@section Css {
+    <style>
+        .comment {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-width: 80%;
+            overflow-wrap: break-word;
+            line-height: 1.5;
+            padding: 12px 15px;
+        }
+
+        .d-flex.justify-content-end .comment {
+            margin-left: auto;
+        }
+
+        .d-flex:not(.justify-content-end) .comment {
+            margin-right: auto;
+        }
+
+        #messages-container {
+            max-height: 60vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+    </style>
+}
+
 <section>
     <div class="container">
         <div id="chat-conversation">
             <h3 class="mb-4 text-light">Chat with @Model.HistoricalFigure.Name</h3>
             <p>SessionId: @Model.Id</p>
 
-            <div id="messages-container" class="mb-4 p-3 border rounded bg-dark text-white"
-                 style="max-height: 400px; overflow-y: auto;">
-
+            <div id="messages-container" class="mb-4 p-3 border rounded bg-dark text-white">
                 @foreach (var msg in Model.Messages.OrderBy(m => m.SentAt))
                 {
                     if (msg.Sender == "User")
@@ -22,7 +47,7 @@
                                 <span class="c_name text-info">You</span>
                                 <span class="c_date text-muted">@msg.SentAt.ToString()</span>
                                 <div class="clearfix"></div>
-                                <div class="comment bg-primary text-white p-3 rounded-3 mt-2 d-inline-block">
+                                <div class="comment bg-primary text-white p-3 rounded-3 mt-2">
                                     @Html.Raw(Html.Encode(msg.MessageText))
                                 </div>
                             </div>
@@ -35,7 +60,7 @@
                                 <span class="c_name text-warning">@Model.HistoricalFigure.Name</span>
                                 <span class="c_date text-muted">@msg.SentAt.ToString()</span>
                                 <div class="clearfix"></div>
-                                <div class="comment bg-secondary text-white p-3 rounded-3 mt-2 d-inline-block">
+                                <div class="comment bg-secondary text-white p-3 rounded-3 mt-2">
                                     @Html.Raw(Html.Encode(msg.MessageText))
                                 </div>
                             </div>
@@ -44,13 +69,12 @@
                 }
             </div>
 
-            <!-- إدخال رسالة جديدة -->
             <div id="comment-form-wrapper" class="pt-3 border-top">
                 <h4 class="text-light">Send a Message</h4>
                 <div class="comment_form_holder">
                     <form id="chat-form" class="form-border">
-                        <textarea id="message" class="form-control mb-3" placeholder="Type your message..."></textarea>
-                        <button type="submit" class="btn btn-primary px-4">Send</button>
+                        <textarea required id="message" class="form-control mb-3" placeholder="Type your message..." rows="3"></textarea>
+                        <button type="submit" class="btn-main fx-slide w-20">Send</button>
                     </form>
                 </div>
             </div>
@@ -69,7 +93,7 @@
 
         function appendMessage(sender, message, isUser) {
             const sanitizedMessage = document.createElement('div');
-            sanitizedMessage.textContent = message; 
+            sanitizedMessage.textContent = message;
 
             const msgHtml = isUser
                 ? `<div class="d-flex justify-content-end mb-3">
@@ -77,7 +101,7 @@
                             <span class="c_name text-info">You</span>
                             <span class="c_date text-muted">${new Date().toLocaleTimeString()}</span>
                             <div class="clearfix"></div>
-                            <div class="comment bg-primary text-white p-3 rounded-3 mt-2 d-inline-block">
+                            <div class="comment bg-primary text-white p-3 rounded-3 mt-2">
                                 ${sanitizedMessage.innerHTML}
                             </div>
                    </div></div>`
@@ -86,9 +110,9 @@
                             <span class="c_name text-warning">${figureName}</span>
                             <span class="c_date text-muted">${new Date().toLocaleTimeString()}</span>
                             <div class="clearfix"></div>
-                            <div class="comment bg-secondary text-white p-3 rounded-3 mt-2 d-inline-block">
+                            <div class="comment bg-secondary text-white p-3 rounded-3 mt-2">
                                 ${sanitizedMessage.innerHTML}
-                            </div>
+                           </div>
                    </div></div>`;
 
             messagesContainer.insertAdjacentHTML("beforeend", msgHtml);
@@ -125,5 +149,7 @@
                 alert("An error occurred while sending the message.");
             });
         });
+
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     </script>
 }

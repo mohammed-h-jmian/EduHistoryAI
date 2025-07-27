@@ -21,23 +21,9 @@ namespace EduHistoryAI.Data
 
             await context.Database.MigrateAsync();
 
-            await SeedRolesAsync(roleManager);
             await SeedAdminUserAsync(userManager);
             await SeedHistoricalFiguresAsync(context);
 
-        }
-
-        private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
-        {
-            string[] roles = { "Admin", "Teacher", "Student" };
-
-            foreach (var role in roles)
-            {
-                if (!await roleManager.RoleExistsAsync(role))
-                {
-                    await roleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
         }
 
         private static async Task SeedAdminUserAsync(UserManager<ApplicationUser> userManager)

@@ -22,7 +22,7 @@ namespace EduHistoryAI.Infrastructure.Services.ChatServices
             _geminiService = geminiService;
         }
 
-        public async Task<int> StartChatAsync(string userId, int historicalFigureId)
+        public async Task<int> StartChat(string userId, int historicalFigureId)
         {
             if (string.IsNullOrEmpty(userId))
             {
@@ -44,11 +44,12 @@ namespace EduHistoryAI.Infrastructure.Services.ChatServices
             return session.Id;
         }
 
-        public async Task<ChatSessionViewModel> GetSessionAsync(int sessionId)
+        public async Task<ChatSessionViewModel> GetSession(int sessionId)
         {
             var session = await _context.ChatSessions
                 .Include(s => s.HistoricalFigure)
                 .Include(s => s.Messages)
+                .Include(s=>s.Student)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == sessionId);
 
@@ -59,7 +60,7 @@ namespace EduHistoryAI.Infrastructure.Services.ChatServices
             return _mapper.Map<ChatSessionViewModel>(session);
         }
 
-        public async Task AddMessageAsync(int sessionId, string sender, string messageText)
+        public async Task AddMessage(int sessionId, string sender, string messageText)
         {
             if (string.IsNullOrEmpty(sender))
                 throw new ArgumentException("Sender cannot be null or empty.", nameof(sender));
@@ -84,14 +85,49 @@ namespace EduHistoryAI.Infrastructure.Services.ChatServices
             await _context.SaveChangesAsync();
         }
 
-        public async Task<string> SendUserMessageAndGetAIReplyAsync(int sessionId, string userMessage, string figureName)
+        //public async Task<string> SendUserMessageAndGetAIReplyAsync(int sessionId, string userMessage, string figureName)
+        //{
+        //    await AddMessageAsync(sessionId, "User", userMessage);
+        //    var aiPrompt = $"You are {figureName}, a historical figure. Answer like {figureName}. User said: {userMessage}";
+        //    var aiReply = await _geminiService.GenerateContentAsync(aiPrompt);
+        //    await AddMessageAsync(sessionId, "AI", aiReply);
+
+        //    return aiReply;
+        //}
+        public async Task<string> SendUserMessageAndGetAIReply(int sessionId, string userMessage, string figureName)
         {
-            await AddMessageAsync(sessionId, "User", userMessage);
-            var aiPrompt = $"You are {figureName}, a historical figure. Answer like {figureName}. User said: {userMessage}";
-            var aiReply = await _geminiService.GenerateContentAsync(aiPrompt);
-            await AddMessageAsync(sessionId, "AI", aiReply);
+            await AddMessage(sessionId, "User", userMessage);
+
+            bool isArabic = System.Text.RegularExpressions.Regex.IsMatch(userMessage, @"\p{IsArabic}");
+
+            string aiPrompt;
+            if (isArabic)
+            {
+                aiPrompt = $"أنت {figureName}، شخصية تاريخية. أجب مثل {figureName}. قال المستخدم: {userMessage}";
+            }
+            else
+            {
+                aiPrompt = $"You are {figureName}, a historical figure. Answer like {figureName}. User said: {userMessage}";
+            }
+
+            var aiReply = await _geminiService.GenerateContent(aiPrompt);
+            await AddMessage(sessionId, "AI", aiReply);
 
             return aiReply;
         }
+
+        public async Task<IEnumerable<ChatSessionViewModel>> GetAllSessions()
+        {
+            var sessions = await _context.ChatSessions
+                .Include(s => s.Student)
+                .Include(s => s.HistoricalFigure)
+                .Include(s => s.Messages)
+                .AsNoTracking()
+                .OrderByDescending(s => s.LastActivityAt)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<ChatSessionViewModel>>(sessions);
+        }
+     
     }
 }

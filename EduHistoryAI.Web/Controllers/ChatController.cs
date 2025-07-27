@@ -21,7 +21,7 @@ namespace EduHistoryAI.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Start(int figureId)
         {
-            var sessionId = await _chatService.StartChatAsync(userId, figureId);
+            var sessionId = await _chatService.StartChat(userId, figureId);
             return RedirectToAction("Session", new { sessionId });
         }
 
@@ -29,7 +29,7 @@ namespace EduHistoryAI.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Session(int sessionId)
         {
-            var session = await _chatService.GetSessionAsync(sessionId);
+            var session = await _chatService.GetSession(sessionId);
             return View(session);
         }
 
@@ -40,7 +40,7 @@ namespace EduHistoryAI.Web.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var aiResponse = await _chatService.SendUserMessageAndGetAIReplyAsync(dto.SessionId, dto.MessageText, dto.FigureName);
+            var aiResponse = await _chatService.SendUserMessageAndGetAIReply(dto.SessionId, dto.MessageText, dto.FigureName);
 
             return Json(new { success = true, aiMessage = aiResponse });
         }

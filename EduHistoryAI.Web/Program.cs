@@ -34,22 +34,21 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddHttpClient();
 
-
-
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 builder.Services
     .AddConfig(builder.Configuration)
     .RegisterServices();
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Auth/Login";
     options.AccessDeniedPath = "/Auth/AccessDenied";
 });
 
-
 var app = builder.Build();
 
+// Seed data
 using (var scope = app.Services.CreateScope())
 {
     await SeedData.InitializeAsync(scope.ServiceProvider);
@@ -73,7 +72,24 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseStatusCodePagesWithReExecute("/Base/NotFound");
+
+app.UseStatusCodePages(async context =>
+{
+    var response = context.HttpContext.Response;
+    if (response.StatusCode == 404)
+    {
+        var path = context.HttpContext.Request.Path;
+
+        if (path.StartsWithSegments("/Admin", StringComparison.OrdinalIgnoreCase))
+        {
+            response.Redirect("/Admin/Base/NotFound");
+        }
+        else
+        {
+            response.Redirect("/Base/NotFound");
+        }
+    }
+});
 
 app.MapControllerRoute(
     name: "areas",

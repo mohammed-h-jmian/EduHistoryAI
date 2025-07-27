@@ -7,11 +7,9 @@ namespace EduHistoryAI.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IAuthService auth, ILogger<HomeController> logger) : base(auth)
+        public HomeController(IAuthService auth) : base(auth)
         {
-            _logger = logger;
         }
 
         public IActionResult Index()
